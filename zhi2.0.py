@@ -9,6 +9,10 @@ import random
 import matplotlib #macos需增加此句话
 matplotlib.use('TkAgg')  #macos需增加此句话
 import matplotlib.pyplot as plt
+from matplotlib.font_manager import *
+
+#plt.rcParams['font.sans-serif'] = ['SimHei'] #python2.7时中文乱码使用
+#plt.rcParams['axes.unicode_minus'] = False #python2.7时中文乱码使用
 
 def roll_dice():
     saizi=random.randint(1, 6)
@@ -24,6 +28,8 @@ def main():
     rool2_list = []
 
     dict_roll = dict(zip(dianshu_list, dice_list))
+
+    roll_list=[]
     for i in range(total):
         roll1 = roll_dice()
         roll2 = roll_dice()
@@ -34,6 +40,9 @@ def main():
         for j in range(2, 13):
             if (roll1+roll2) == j:
                 dict_roll[j] += 1
+
+        roll_list.append(roll1+roll2)
+
     y = []
     for i, x in dict_roll.items():
         print('点数{}的次数为：{}，频率:{}'.format(i, x, x/total))
@@ -51,6 +60,12 @@ def main():
     plt.scatter(x, rool2_list, c='green', alpha=0.5)
     plt.show()
 
+    zhfont1 = matplotlib.font_manager.FontProperties(fname='/Library/Fonts/songti.ttc')  # 从mac系统指定一个中文ttf文件
+    plt.hist(roll_list, bins=range(2, 12), density=1, edgecolor='black', linewidth=1)
+    plt.title('点数概率', fontproperties=zhfont1)
+    plt.xlabel('两个骰子之和', fontproperties=zhfont1)
+    plt.ylabel('概率', fontproperties=zhfont1)
+    plt.show()
 
 
 
